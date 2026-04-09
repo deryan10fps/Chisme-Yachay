@@ -1,1 +1,1413 @@
-<h1>Github pages test</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yachay Chismes 🔥</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --accent: #ff2d78;
+    --accent2: #7c3aff;
+    --accent3: #00e5ff;
+    --gold: #ffd700;
+    --text: #f0eeff;
+    --text-muted: #8888aa;
+    --border: rgba(124,58,255,0.2);
+    --glow: 0 0 30px rgba(255,45,120,0.3);
+    --glow2: 0 0 30px rgba(124,58,255,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* PARTICLES CANVAS */
+  #particles-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2.4rem;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    position: relative;
+  }
+
+  .logo span {
+    font-size: 1.1rem;
+    font-family: 'Space Mono', monospace;
+    -webkit-text-fill-color: var(--text-muted);
+    display: block;
+    line-height: 1;
+    letter-spacing: 4px;
+    margin-top: -6px;
+  }
+
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,45,120,0.1);
+    border: 1px solid rgba(255,45,120,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.78rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .live-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 60px 2rem 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(3rem, 10vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: 2px;
+  }
+
+  .hero-title .line1 { color: var(--text); }
+  .hero-title .line2 {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+  }
+
+  .hero-sub {
+    margin-top: 16px;
+    color: var(--text-muted);
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  /* CATEGORIES */
+  .categories {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0 2rem 40px;
+  }
+
+  .cat-pill {
+    padding: 8px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+
+  .cat-pill:hover, .cat-pill.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(255,45,120,0.08);
+    box-shadow: var(--glow);
+  }
+
+  .cat-pill .emoji { margin-right: 6px; }
+
+  /* MAIN LAYOUT */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .main { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  /* POST FORM */
+  .post-form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .post-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+  }
+
+  .form-header {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .form-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  .form-input:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 0 3px rgba(124,58,255,0.15);
+  }
+
+  .form-input::placeholder { color: var(--text-muted); }
+
+  textarea.form-input {
+    min-height: 120px;
+    resize: vertical;
+    margin-bottom: 14px;
+  }
+
+  /* MEDIA UPLOAD */
+  .media-upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 14px;
+    background: var(--surface2);
+  }
+
+  .media-upload-zone:hover, .media-upload-zone.dragover {
+    border-color: var(--accent2);
+    background: rgba(124,58,255,0.06);
+  }
+
+  .media-upload-zone .icon { font-size: 2rem; margin-bottom: 8px; }
+  .media-upload-zone p { color: var(--text-muted); font-size: 0.85rem; }
+  .media-upload-zone strong { color: var(--accent2); }
+
+  #media-input { display: none; }
+
+  .media-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .media-preview-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 1px solid var(--border);
+  }
+
+  .media-preview-item img, .media-preview-item video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .media-remove {
+    position: absolute;
+    top: 4px; right: 4px;
+    background: rgba(0,0,0,0.7);
+    border: none;
+    color: white;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .char-count {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 100px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--glow);
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(255,45,120,0.5);
+  }
+
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* POST CARDS */
+  .posts-list { display: flex; flex-direction: column; gap: 20px; }
+
+  .post-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.2s;
+    animation: fadeInUp 0.4s ease both;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .post-card:hover {
+    border-color: rgba(124,58,255,0.4);
+    transform: translateY(-2px);
+  }
+
+  .post-card-header {
+    padding: 20px 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .post-author-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .author-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.2rem;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .author-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .post-time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .post-cat-badge {
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .cat-escandalo { background: rgba(255,45,120,0.15); color: var(--accent); border: 1px solid rgba(255,45,120,0.3); }
+  .cat-romance { background: rgba(255,150,180,0.15); color: #ff9cb4; border: 1px solid rgba(255,150,180,0.3); }
+  .cat-celebs { background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); }
+  .cat-barrio { background: rgba(0,229,255,0.15); color: var(--accent3); border: 1px solid rgba(0,229,255,0.3); }
+  .cat-general { background: rgba(124,58,255,0.15); color: var(--accent2); border: 1px solid rgba(124,58,255,0.3); }
+
+  .post-content {
+    padding: 16px 24px;
+    font-size: 0.97rem;
+    line-height: 1.65;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* MEDIA GRID */
+  .post-media {
+    padding: 0 24px 8px;
+    display: grid;
+    gap: 6px;
+  }
+
+  .post-media.media-1 { grid-template-columns: 1fr; }
+  .post-media.media-2 { grid-template-columns: 1fr 1fr; }
+  .post-media.media-3 { grid-template-columns: 1fr 1fr; }
+  .post-media.media-3 .media-item:first-child { grid-column: 1 / -1; }
+  .post-media.media-4 { grid-template-columns: 1fr 1fr; }
+
+  .media-item {
+    border-radius: 12px;
+    overflow: hidden;
+    max-height: 400px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .media-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s;
+  }
+
+  .media-item:hover img { transform: scale(1.03); }
+
+  .media-item video {
+    width: 100%;
+    max-height: 400px;
+    display: block;
+    background: #000;
+    border-radius: 12px;
+  }
+
+  /* REACTIONS */
+  .post-reactions {
+    padding: 14px 24px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+  }
+
+  .reaction-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .reaction-btn:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+    transform: scale(1.08);
+  }
+
+  .reaction-btn .emoji { font-size: 1rem; }
+  .reaction-btn .count { font-family: 'Space Mono', monospace; font-size: 0.75rem; }
+
+  /* POST ACTIONS */
+  .post-actions {
+    padding: 0 24px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.15s;
+  }
+
+  .action-btn:hover { color: var(--accent); background: rgba(255,45,120,0.08); }
+  .action-btn.liked { color: var(--accent); }
+  .action-btn svg { width: 16px; height: 16px; }
+
+  /* COMMENTS */
+  .comments-section {
+    border-top: 1px solid var(--border);
+    padding: 16px 24px 20px;
+    display: none;
+  }
+
+  .comments-section.open { display: block; }
+
+  .comment-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .comment-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent2), var(--accent3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 0.9rem;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .comment-body {
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 10px 14px;
+    flex: 1;
+  }
+
+  .comment-author-name {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--accent2);
+    margin-bottom: 3px;
+  }
+
+  .comment-text {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .comment-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .comment-input {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 18px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .comment-input:focus { border-color: var(--accent2); }
+  .comment-input::placeholder { color: var(--text-muted); }
+
+  .btn-comment {
+    background: var(--accent2);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .btn-comment:hover { background: #6d2ff0; }
+
+  /* SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+  .sidebar-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    position: sticky;
+    top: 90px;
+  }
+
+  .sidebar-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .trending-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .trending-item:last-child { border-bottom: none; }
+  .trending-item:hover .trending-text { color: var(--accent); }
+
+  .trending-rank {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.4rem;
+    color: var(--accent2);
+    width: 28px;
+    text-align: center;
+  }
+
+  .trending-text {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: color 0.15s;
+  }
+
+  .trending-count {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+
+  .stat-box {
+    background: var(--surface2);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+
+  .empty-state .emoji { font-size: 3rem; margin-bottom: 16px; }
+  .empty-state p { font-size: 0.95rem; }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    cursor: zoom-out;
+  }
+
+  .lightbox.open { display: flex; }
+
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 12px;
+    object-fit: contain;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 999;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 22px;
+    font-size: 0.88rem;
+    color: var(--text);
+    box-shadow: var(--glow2);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* LOADING */
+  .loading-spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 40px auto;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent2); }
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<div class="content-wrapper">
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        YACHAY
+        <span>CHISMES</span>
+      </div>
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        EN VIVO
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-title">
+      <span class="line1">EL CHISME</span>
+      <span class="line2">NO PARA 🔥</span>
+    </div>
+    <p class="hero-sub">Publica lo que sabes · Anónimo o con nombre · Sin censura</p>
+  </div>
+
+  <!-- CATEGORIES FILTER -->
+  <div class="categories">
+    <button class="cat-pill active" data-cat="all"><span class="emoji">🌐</span>Todo</button>
+    <button class="cat-pill" data-cat="escandalo"><span class="emoji">💥</span>Escándalo</button>
+    <button class="cat-pill" data-cat="romance"><span class="emoji">💋</span>Romance</button>
+    <button class="cat-pill" data-cat="celebs"><span class="emoji">⭐</span>Celebs</button>
+    <button class="cat-pill" data-cat="barrio"><span class="emoji">🏘️</span>Del Barrio</button>
+    <button class="cat-pill" data-cat="general"><span class="emoji">👀</span>General</button>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="feed-col">
+      <!-- FORM -->
+      <div class="post-form-card">
+        <div class="form-header">🔥 Suelta el Chisme</div>
+        <div class="form-row">
+          <input type="text" id="author-input" class="form-input" placeholder="Tu nombre (o quédate anónimo)">
+          <select id="category-input" class="form-input">
+            <option value="general">👀 General</option>
+            <option value="escandalo">💥 Escándalo</option>
+            <option value="romance">💋 Romance</option>
+            <option value="celebs">⭐ Celebs</option>
+            <option value="barrio">🏘️ Del Barrio</option>
+          </select>
+        </div>
+        <textarea id="content-input" class="form-input" placeholder="¿Qué es lo que te contaron? Suéltalo aquí... 👀✨"></textarea>
+        
+        <div class="media-upload-zone" id="drop-zone" onclick="document.getElementById('media-input').click()">
+          <div class="icon">📸</div>
+          <p><strong>Sube fotos o videos</strong> o arrastra aquí</p>
+          <p>JPG, PNG, GIF, MP4, MOV hasta 50MB</p>
+        </div>
+        <input type="file" id="media-input" multiple accept="image/*,video/*">
+        <div class="media-preview-grid" id="media-preview"></div>
+        
+        <div class="form-bottom">
+          <span class="char-count" id="char-count">0 / 500</span>
+          <button class="btn-submit" id="submit-btn" onclick="submitPost()">PUBLICAR CHISME</button>
+        </div>
+      </div>
+
+      <!-- POSTS -->
+      <div id="posts-list" class="posts-list">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-title">📊 Stats del Día</div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-num" id="stat-posts">0</div>
+            <div class="stat-label">Chismes</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="stat-reactions">0</div>
+            <div class="stat-label">Reacciones</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="stat-comments">0</div>
+            <div class="stat-label">Comentarios</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="stat-media">0</div>
+            <div class="stat-label">Fotos/Videos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-title">🔥 Trending</div>
+        <div id="trending-list">
+          <div style="color:var(--text-muted);font-size:0.85rem;">Cargando tendencias...</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== PARTICLES =====
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let W, H;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const COLORS = ['#ff2d78', '#7c3aff', '#00e5ff', '#ffd700', '#ff9cb4'];
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4 - 0.1;
+    this.size = Math.random() * 2.5 + 0.5;
+    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.alpha = Math.random() * 0.5 + 0.1;
+    this.life = 1;
+    this.decay = Math.random() * 0.003 + 0.001;
+    this.type = Math.random() > 0.85 ? 'star' : 'circle';
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life -= this.decay;
+    if (this.life <= 0 || this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.life * this.alpha;
+    ctx.fillStyle = this.color;
+    if (this.type === 'star') {
+      drawStar(ctx, this.x, this.y, 4, this.size * 2, this.size);
+    } else {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+function drawStar(ctx, cx, cy, spikes, outerR, innerR) {
+  let rot = (Math.PI / 2) * 3;
+  const step = Math.PI / spikes;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - outerR);
+  for (let i = 0; i < spikes; i++) {
+    ctx.lineTo(cx + Math.cos(rot) * outerR, cy + Math.sin(rot) * outerR);
+    rot += step;
+    ctx.lineTo(cx + Math.cos(rot) * innerR, cy + Math.sin(rot) * innerR);
+    rot += step;
+  }
+  ctx.lineTo(cx, cy - outerR);
+  ctx.closePath();
+  ctx.fill();
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+// Connect particles
+function connectParticles() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 100) {
+        ctx.save();
+        ctx.globalAlpha = (1 - dist / 100) * 0.05;
+        ctx.strokeStyle = '#7c3aff';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  connectParticles();
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ===== STATE =====
+let allPosts = [];
+let mediaFiles = [];
+let currentFilter = 'all';
+
+// ===== INIT =====
+loadPosts();
+
+// ===== TEXTAREA COUNTER =====
+const contentInput = document.getElementById('content-input');
+const charCount = document.getElementById('char-count');
+contentInput.addEventListener('input', () => {
+  const len = contentInput.value.length;
+  charCount.textContent = `${len} / 500`;
+  charCount.style.color = len > 450 ? 'var(--accent)' : 'var(--text-muted)';
+});
+
+// ===== DRAG & DROP =====
+const dropZone = document.getElementById('drop-zone');
+const mediaInput = document.getElementById('media-input');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+mediaInput.addEventListener('change', e => handleFiles(e.target.files));
+
+function handleFiles(files) {
+  Array.from(files).forEach(file => {
+    if (mediaFiles.length >= 6) { showToast('Máximo 6 archivos por chisme'); return; }
+    mediaFiles.push(file);
+    renderMediaPreview();
+  });
+}
+
+function renderMediaPreview() {
+  const grid = document.getElementById('media-preview');
+  grid.innerHTML = '';
+  mediaFiles.forEach((file, i) => {
+    const item = document.createElement('div');
+    item.className = 'media-preview-item';
+    if (file.type.startsWith('image/')) {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      item.appendChild(img);
+    } else {
+      const vid = document.createElement('video');
+      vid.src = URL.createObjectURL(file);
+      vid.muted = true;
+      item.appendChild(vid);
+    }
+    const btn = document.createElement('button');
+    btn.className = 'media-remove';
+    btn.innerHTML = '✕';
+    btn.onclick = (e) => { e.stopPropagation(); mediaFiles.splice(i, 1); renderMediaPreview(); };
+    item.appendChild(btn);
+    grid.appendChild(item);
+  });
+}
+
+// ===== SUBMIT POST =====
+async function submitPost() {
+  const content = document.getElementById('content-input').value.trim();
+  if (!content) { showToast('¡Escribe el chisme primero! 👀'); return; }
+  if (content.length > 500) { showToast('Máximo 500 caracteres'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'PUBLICANDO...';
+
+  const formData = new FormData();
+  formData.append('content', content);
+  formData.append('author', document.getElementById('author-input').value.trim() || 'Anónimo');
+  formData.append('category', document.getElementById('category-input').value);
+  mediaFiles.forEach(f => formData.append('media', f));
+
+  try {
+    const res = await fetch('/api/posts', { method: 'POST', body: formData });
+    if (!res.ok) throw new Error('Error al publicar');
+    const post = await res.json();
+    allPosts.unshift(post);
+    renderPosts();
+    updateStats();
+    document.getElementById('content-input').value = '';
+    document.getElementById('author-input').value = '';
+    document.getElementById('char-count').textContent = '0 / 500';
+    mediaFiles = [];
+    document.getElementById('media-preview').innerHTML = '';
+    mediaInput.value = '';
+    showToast('🔥 ¡Chisme publicado!');
+  } catch (e) {
+    showToast('Error al publicar. Intenta de nuevo.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'PUBLICAR CHISME';
+}
+
+// ===== LOAD POSTS =====
+async function loadPosts() {
+  try {
+    const res = await fetch('/api/posts');
+    allPosts = await res.json();
+    renderPosts();
+    updateStats();
+    updateTrending();
+  } catch (e) {
+    document.getElementById('posts-list').innerHTML = '<div class="empty-state"><div class="emoji">😵</div><p>No se pudo cargar. Recarga la página.</p></div>';
+  }
+}
+
+// ===== RENDER POSTS =====
+function renderPosts() {
+  const list = document.getElementById('posts-list');
+  const filtered = currentFilter === 'all' ? allPosts : allPosts.filter(p => p.category === currentFilter);
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="emoji">🤫</div><p>No hay chismes aquí todavía.<br>¡Sé el primero en publicar!</p></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map((p, i) => buildPostHTML(p, i)).join('');
+}
+
+function buildPostHTML(p, index) {
+  const authorInitial = (p.author || 'A')[0].toUpperCase();
+  const timeStr = formatTime(p.timestamp);
+  const catClass = `cat-${p.category}`;
+  const catLabel = { escandalo: '💥 Escándalo', romance: '💋 Romance', celebs: '⭐ Celebs', barrio: '🏘️ Barrio', general: '👀 General' }[p.category] || '👀 General';
+
+  const mediaHTML = p.media && p.media.length > 0 ? `
+    <div class="post-media media-${Math.min(p.media.length, 4)}">
+      ${p.media.slice(0, 4).map(m => m.type === 'video'
+        ? `<div class="media-item"><video src="${m.url}" controls></video></div>`
+        : `<div class="media-item"><img src="${m.url}" onclick="openLightbox('${m.url}')" alt="media"></div>`
+      ).join('')}
+    </div>` : '';
+
+  const reactionsHTML = Object.entries(p.reactions).map(([emoji, count]) => `
+    <button class="reaction-btn" onclick="react('${p.id}','${emoji}',this)">
+      <span class="emoji">${emoji}</span>
+      <span class="count">${count}</span>
+    </button>`).join('');
+
+  const commentsHTML = p.comments.map(c => `
+    <div class="comment-item">
+      <div class="comment-avatar">${(c.author||'A')[0].toUpperCase()}</div>
+      <div class="comment-body">
+        <div class="comment-author-name">${escapeHTML(c.author)}</div>
+        <div class="comment-text">${escapeHTML(c.text)}</div>
+      </div>
+    </div>`).join('');
+
+  return `
+  <div class="post-card" style="animation-delay:${index * 0.06}s">
+    <div class="post-card-header">
+      <div class="post-author-info">
+        <div class="author-avatar">${authorInitial}</div>
+        <div>
+          <div class="author-name">${escapeHTML(p.author || 'Anónimo')}</div>
+          <div class="post-time">${timeStr}</div>
+        </div>
+      </div>
+      <span class="post-cat-badge ${catClass}">${catLabel}</span>
+    </div>
+    <div class="post-content">${escapeHTML(p.content)}</div>
+    ${mediaHTML}
+    <div class="post-reactions">${reactionsHTML}</div>
+    <div class="post-actions">
+      <button class="action-btn" onclick="likePost('${p.id}',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span>${p.likes}</span>
+      </button>
+      <button class="action-btn" onclick="toggleComments('${p.id}',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>${p.comments.length} comentarios</span>
+      </button>
+      <button class="action-btn" onclick="sharePost('${p.id}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        Compartir
+      </button>
+    </div>
+    <div class="comments-section" id="comments-${p.id}">
+      <div id="comments-list-${p.id}">${commentsHTML}</div>
+      <div class="comment-form">
+        <input type="text" class="comment-input" id="comment-name-${p.id}" placeholder="Tu nombre...">
+        <input type="text" class="comment-input" id="comment-text-${p.id}" placeholder="Añade un comentario..." onkeydown="if(event.key==='Enter')addComment('${p.id}')">
+        <button class="btn-comment" onclick="addComment('${p.id}')">→</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ===== LIKE =====
+async function likePost(id, btn) {
+  btn.classList.toggle('liked');
+  const span = btn.querySelector('span');
+  try {
+    const res = await fetch(`/api/posts/${id}/like`, { method: 'POST' });
+    const data = await res.json();
+    span.textContent = data.likes;
+    const post = allPosts.find(p => p.id === id);
+    if (post) post.likes = data.likes;
+    updateStats();
+  } catch(e) {}
+}
+
+// ===== REACT =====
+async function react(id, emoji, btn) {
+  try {
+    const res = await fetch(`/api/posts/${id}/react`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ emoji })
+    });
+    const data = await res.json();
+    btn.querySelector('.count').textContent = data.reactions[emoji];
+    const post = allPosts.find(p => p.id === id);
+    if (post) post.reactions = data.reactions;
+    btn.style.transform = 'scale(1.3)';
+    setTimeout(() => btn.style.transform = '', 200);
+    updateStats();
+  } catch(e) {}
+}
+
+// ===== COMMENT =====
+function toggleComments(id, btn) {
+  const section = document.getElementById(`comments-${id}`);
+  section.classList.toggle('open');
+  if (section.classList.contains('open')) {
+    section.querySelector('.comment-input:last-of-type').focus();
+  }
+}
+
+async function addComment(postId) {
+  const nameInput = document.getElementById(`comment-name-${postId}`);
+  const textInput = document.getElementById(`comment-text-${postId}`);
+  const text = textInput.value.trim();
+  if (!text) return;
+
+  try {
+    const res = await fetch(`/api/posts/${postId}/comment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, author: nameInput.value.trim() || 'Anónimo' })
+    });
+    const comment = await res.json();
+    const list = document.getElementById(`comments-list-${postId}`);
+    const div = document.createElement('div');
+    div.className = 'comment-item';
+    div.innerHTML = `
+      <div class="comment-avatar">${(comment.author||'A')[0].toUpperCase()}</div>
+      <div class="comment-body">
+        <div class="comment-author-name">${escapeHTML(comment.author)}</div>
+        <div class="comment-text">${escapeHTML(comment.text)}</div>
+      </div>`;
+    list.appendChild(div);
+    textInput.value = '';
+    const post = allPosts.find(p => p.id === postId);
+    if (post) post.comments.push(comment);
+    updateStats();
+    updateTrending();
+  } catch(e) {}
+}
+
+// ===== SHARE =====
+function sharePost(id) {
+  const url = `${window.location.origin}/#post-${id}`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast('🔗 ¡Link copiado!'));
+  } else {
+    showToast('🔗 ' + url);
+  }
+}
+
+// ===== CATEGORIES =====
+document.querySelectorAll('.cat-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.cat;
+    renderPosts();
+  });
+});
+
+// ===== STATS =====
+function updateStats() {
+  const totalReactions = allPosts.reduce((s, p) => s + Object.values(p.reactions).reduce((a,b)=>a+b,0) + p.likes, 0);
+  const totalComments = allPosts.reduce((s, p) => s + p.comments.length, 0);
+  const totalMedia = allPosts.reduce((s, p) => s + (p.media ? p.media.length : 0), 0);
+  animateNum('stat-posts', allPosts.length);
+  animateNum('stat-reactions', totalReactions);
+  animateNum('stat-comments', totalComments);
+  animateNum('stat-media', totalMedia);
+}
+
+function animateNum(id, target) {
+  const el = document.getElementById(id);
+  const start = parseInt(el.textContent) || 0;
+  const step = Math.ceil(Math.abs(target - start) / 20);
+  let curr = start;
+  const timer = setInterval(() => {
+    curr = curr < target ? Math.min(curr + step, target) : Math.max(curr - step, target);
+    el.textContent = curr;
+    if (curr === target) clearInterval(timer);
+  }, 30);
+}
+
+// ===== TRENDING =====
+function updateTrending() {
+  const catCounts = {};
+  allPosts.forEach(p => { catCounts[p.category] = (catCounts[p.category] || 0) + 1 + p.likes + p.comments.length; });
+  const sorted = Object.entries(catCounts).sort((a, b) => b[1] - a[1]);
+  const catNames = { escandalo: '💥 Escándalos', romance: '💋 Romances', celebs: '⭐ Celebs', barrio: '🏘️ Del Barrio', general: '👀 Generales' };
+  const el = document.getElementById('trending-list');
+  if (sorted.length === 0) { el.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem">Aún no hay tendencias</div>'; return; }
+  el.innerHTML = sorted.slice(0, 5).map(([cat, count], i) => `
+    <div class="trending-item" onclick="filterByCat('${cat}')">
+      <span class="trending-rank">${i + 1}</span>
+      <span class="trending-text">${catNames[cat] || cat}</span>
+      <span class="trending-count">${count} pts</span>
+    </div>`).join('');
+}
+
+function filterByCat(cat) {
+  document.querySelectorAll('.cat-pill').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  currentFilter = cat;
+  renderPosts();
+  window.scrollTo({ top: 400, behavior: 'smooth' });
+}
+
+// ===== LIGHTBOX =====
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== UTILS =====
+function escapeHTML(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatTime(iso) {
+  const d = new Date(iso);
+  const now = new Date();
+  const diff = (now - d) / 1000;
+  if (diff < 60) return 'Ahora mismo';
+  if (diff < 3600) return `Hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400) return `Hace ${Math.floor(diff/3600)}h`;
+  return d.toLocaleDateString('es-EC', { day:'numeric', month:'short' });
+}
+
+// Auto-refresh cada 30 segundos
+setInterval(async () => {
+  try {
+    const res = await fetch('/api/posts');
+    const fresh = await res.json();
+    if (fresh.length !== allPosts.length) {
+      allPosts = fresh;
+      renderPosts();
+      updateStats();
+      updateTrending();
+      showToast('✨ Nuevos chismes disponibles');
+    }
+  } catch(e) {}
+}, 30000);
+</script>
+</body>
+</html>
