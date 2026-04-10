@@ -1,134 +1,141 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
-import os
+from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+import cloudinary
+import cloudinary.uploader
 import uuid
-import json
 from datetime import datetime
-from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yachay-secreto-2024'
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'mov', 'webm'}
+# ================= DB =================
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-os.makedirs('uploads', exist_ok=True)
-os.makedirs('data', exist_ok=True)
+# ================= CLOUDINARY =================
+cloudinary.config(
+    cloud_name=os.getenv("CLOUD_NAME"),
+    api_key=os.getenv("API_KEY"),
+    api_secret=os.getenv("API_SECRET")
+)
 
-POSTS_FILE = 'data/posts.json'
+# ================= MODELOS =================
+class Post(db.Model):
+    id = db.Column(db.String, primary_key=True)
+    author = db.Column(db.String(100))
+    content = db.Column(db.Text)
+    category = db.Column(db.String(50))
+    timestamp = db.Column(db.String(50))
+    likes = db.Column(db.Integer, default=0)
 
-def load_posts():
-    if os.path.exists(POSTS_FILE):
-        with open(POSTS_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    return []
+class Comment(db.Model):
+    id = db.Column(db.String, primary_key=True)
+    post_id = db.Column(db.String)
+    author = db.Column(db.String(100))
+    text = db.Column(db.Text)
 
-def save_posts(posts):
-    with open(POSTS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(posts, f, ensure_ascii=False, indent=2)
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# ================= RUTAS =================
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# 🔥 OBTENER POSTS
 @app.route('/api/posts', methods=['GET'])
 def get_posts():
-    posts = load_posts()
-    posts.sort(key=lambda x: x['timestamp'], reverse=True)
-    return jsonify(posts)
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    result = []
 
+    for p in posts:
+        comments = Comment.query.filter_by(post_id=p.id).all()
+
+        result.append({
+            "id": p.id,
+            "author": p.author,
+            "content": p.content,
+            "category": p.category,
+            "timestamp": p.timestamp,
+            "likes": p.likes,
+            "comments": [{"author": c.author, "text": c.text} for c in comments],
+            "reactions": {"🔥":0,"😱":0,"😂":0},
+            "media": []  # luego puedes mejorar esto
+        })
+
+    return jsonify(result)
+
+# 🚀 CREAR POST
 @app.route('/api/posts', methods=['POST'])
 def create_post():
-    posts = load_posts()
-    
-    content = request.form.get('content', '').strip()
-    author = request.form.get('author', 'Anónimo').strip() or 'Anónimo'
+    content = request.form.get('content')
+    author = request.form.get('author', 'Anónimo')
     category = request.form.get('category', 'general')
-    
-    if not content:
-        return jsonify({'error': 'El chisme no puede estar vacío'}), 400
 
-    media_files = []
-    
+    media_urls = []
+
     if 'media' in request.files:
         files = request.files.getlist('media')
         for file in files:
-            if file and file.filename and allowed_file(file.filename):
-                ext = file.filename.rsplit('.', 1)[1].lower()
-                filename = f"{uuid.uuid4().hex}.{ext}"
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                media_type = 'video' if ext in {'mp4', 'mov', 'webm'} else 'image'
-                media_files.append({'url': f'/uploads/{filename}', 'type': media_type})
+            if file.filename:
+                result = cloudinary.uploader.upload(file)
+                media_urls.append(result["secure_url"])
 
-    post = {
-        'id': str(uuid.uuid4()),
-        'content': content,
-        'author': author,
-        'category': category,
-        'media': media_files,
-        'timestamp': datetime.now().isoformat(),
-        'likes': 0,
-        'comments': [],
-        'reactions': {'🔥': 0, '😱': 0, '💀': 0, '🤣': 0, '👀': 0}
-    }
-    
-    posts.append(post)
-    save_posts(posts)
-    
-    return jsonify(post), 201
+    new_post = Post(
+        id=str(uuid.uuid4()),
+        author=author,
+        content=content,
+        category=category,
+        timestamp=datetime.now().isoformat(),
+        likes=0
+    )
 
+    db.session.add(new_post)
+    db.session.commit()
+
+    return jsonify({
+        "id": new_post.id,
+        "author": new_post.author,
+        "content": new_post.content,
+        "category": new_post.category,
+        "timestamp": new_post.timestamp,
+        "likes": new_post.likes,
+        "comments": [],
+        "reactions": {"🔥":0,"😱":0,"😂":0},
+        "media": [{"url": url, "type":"image"} for url in media_urls]
+    })
+
+# 👍 LIKE
 @app.route('/api/posts/<post_id>/like', methods=['POST'])
 def like_post(post_id):
-    posts = load_posts()
-    for post in posts:
-        if post['id'] == post_id:
-            post['likes'] += 1
-            save_posts(posts)
-            return jsonify({'likes': post['likes']})
-    return jsonify({'error': 'Post no encontrado'}), 404
+    post = Post.query.get(post_id)
+    if post:
+        post.likes += 1
+        db.session.commit()
+        return jsonify({"likes": post.likes})
+    return jsonify({"error": "No encontrado"}), 404
 
-@app.route('/api/posts/<post_id>/react', methods=['POST'])
-def react_post(post_id):
-    data = request.get_json()
-    emoji = data.get('emoji')
-    posts = load_posts()
-    for post in posts:
-        if post['id'] == post_id:
-            if emoji in post['reactions']:
-                post['reactions'][emoji] += 1
-                save_posts(posts)
-                return jsonify({'reactions': post['reactions']})
-    return jsonify({'error': 'Post no encontrado'}), 404
-
+# 💬 COMENTARIOS
 @app.route('/api/posts/<post_id>/comment', methods=['POST'])
 def add_comment(post_id):
     data = request.get_json()
-    comment_text = data.get('text', '').strip()
-    author = data.get('author', 'Anónimo').strip() or 'Anónimo'
-    
-    if not comment_text:
-        return jsonify({'error': 'Comentario vacío'}), 400
-    
-    posts = load_posts()
-    for post in posts:
-        if post['id'] == post_id:
-            comment = {
-                'id': str(uuid.uuid4()),
-                'text': comment_text,
-                'author': author,
-                'timestamp': datetime.now().isoformat()
-            }
-            post['comments'].append(comment)
-            save_posts(posts)
-            return jsonify(comment), 201
-    return jsonify({'error': 'Post no encontrado'}), 404
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    comment = Comment(
+        id=str(uuid.uuid4()),
+        post_id=post_id,
+        author=data.get('author', 'Anónimo'),
+        text=data.get('text')
+    )
 
+    db.session.add(comment)
+    db.session.commit()
+
+    return jsonify({
+        "author": comment.author,
+        "text": comment.text
+    })
+
+# ================= INIT =================
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)
