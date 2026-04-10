@@ -32,7 +32,6 @@
     cursor: default;
   }
 
-  /* PARTICLES CANVAS */
   #particles-canvas {
     position: fixed;
     top: 0; left: 0;
@@ -41,7 +40,6 @@
     z-index: 0;
   }
 
-  /* NOISE OVERLAY */
   body::before {
     content: '';
     position: fixed;
@@ -52,12 +50,8 @@
     opacity: 0.5;
   }
 
-  .content-wrapper {
-    position: relative;
-    z-index: 2;
-  }
+  .content-wrapper { position: relative; z-index: 2; }
 
-  /* HEADER */
   header {
     position: sticky;
     top: 0;
@@ -125,7 +119,6 @@
     50% { opacity: 0.4; transform: scale(0.7); }
   }
 
-  /* HERO */
   .hero {
     text-align: center;
     padding: 60px 2rem 40px;
@@ -149,14 +142,8 @@
     display: block;
   }
 
-  .hero-sub {
-    margin-top: 16px;
-    color: var(--text-muted);
-    font-size: 1rem;
-    letter-spacing: 1px;
-  }
+  .hero-sub { margin-top: 16px; color: var(--text-muted); font-size: 1rem; letter-spacing: 1px; }
 
-  /* CATEGORIES */
   .categories {
     display: flex;
     gap: 10px;
@@ -187,7 +174,6 @@
 
   .cat-pill .emoji { margin-right: 6px; }
 
-  /* MAIN LAYOUT */
   .main {
     max-width: 1100px;
     margin: 0 auto;
@@ -202,7 +188,6 @@
     .sidebar { display: none; }
   }
 
-  /* POST FORM */
   .post-form-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -259,13 +244,14 @@
 
   .form-input::placeholder { color: var(--text-muted); }
 
+  select.form-input option { background: #1a1a26; }
+
   textarea.form-input {
     min-height: 120px;
     resize: vertical;
     margin-bottom: 14px;
   }
 
-  /* MEDIA UPLOAD */
   .media-upload-zone {
     border: 2px dashed var(--border);
     border-radius: 14px;
@@ -331,11 +317,7 @@
     flex-wrap: wrap;
   }
 
-  .char-count {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    font-family: 'Space Mono', monospace;
-  }
+  .char-count { font-size: 0.78rem; color: var(--text-muted); font-family: 'Space Mono', monospace; }
 
   .btn-submit {
     background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -351,15 +333,10 @@
     box-shadow: var(--glow);
   }
 
-  .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 30px rgba(255,45,120,0.5);
-  }
-
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(255,45,120,0.5); }
   .btn-submit:active { transform: translateY(0); }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  /* POST CARDS */
   .posts-list { display: flex; flex-direction: column; gap: 20px; }
 
   .post-card {
@@ -376,10 +353,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .post-card:hover {
-    border-color: rgba(124,58,255,0.4);
-    transform: translateY(-2px);
-  }
+  .post-card:hover { border-color: rgba(124,58,255,0.4); transform: translateY(-2px); }
 
   .post-card-header {
     padding: 20px 24px 0;
@@ -388,11 +362,7 @@
     justify-content: space-between;
   }
 
-  .post-author-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .post-author-info { display: flex; align-items: center; gap: 12px; }
 
   .author-avatar {
     width: 42px; height: 42px;
@@ -407,17 +377,8 @@
     flex-shrink: 0;
   }
 
-  .author-name {
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--text);
-  }
-
-  .post-time {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-family: 'Space Mono', monospace;
-  }
+  .author-name { font-weight: 600; font-size: 0.95rem; color: var(--text); }
+  .post-time { font-size: 0.75rem; color: var(--text-muted); font-family: 'Space Mono', monospace; }
 
   .post-cat-badge {
     font-size: 0.72rem;
@@ -443,13 +404,7 @@
     word-break: break-word;
   }
 
-  /* MEDIA GRID */
-  .post-media {
-    padding: 0 24px 8px;
-    display: grid;
-    gap: 6px;
-  }
-
+  .post-media { padding: 0 24px 8px; display: grid; gap: 6px; }
   .post-media.media-1 { grid-template-columns: 1fr; }
   .post-media.media-2 { grid-template-columns: 1fr 1fr; }
   .post-media.media-3 { grid-template-columns: 1fr 1fr; }
@@ -465,8 +420,7 @@
   }
 
   .media-item img {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 0.3s;
@@ -482,7 +436,6 @@
     border-radius: 12px;
   }
 
-  /* REACTIONS */
   .post-reactions {
     padding: 14px 24px;
     display: flex;
@@ -505,16 +458,10 @@
     color: var(--text-muted);
   }
 
-  .reaction-btn:hover {
-    border-color: var(--accent2);
-    color: var(--accent2);
-    transform: scale(1.08);
-  }
-
+  .reaction-btn:hover { border-color: var(--accent2); color: var(--accent2); transform: scale(1.08); }
   .reaction-btn .emoji { font-size: 1rem; }
   .reaction-btn .count { font-family: 'Space Mono', monospace; font-size: 0.75rem; }
 
-  /* POST ACTIONS */
   .post-actions {
     padding: 0 24px 16px;
     display: flex;
@@ -541,7 +488,6 @@
   .action-btn.liked { color: var(--accent); }
   .action-btn svg { width: 16px; height: 16px; }
 
-  /* COMMENTS */
   .comments-section {
     border-top: 1px solid var(--border);
     padding: 16px 24px 20px;
@@ -550,11 +496,7 @@
 
   .comments-section.open { display: block; }
 
-  .comment-item {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
+  .comment-item { display: flex; gap: 10px; margin-bottom: 12px; }
 
   .comment-avatar {
     width: 30px; height: 30px;
@@ -569,31 +511,11 @@
     flex-shrink: 0;
   }
 
-  .comment-body {
-    background: var(--surface2);
-    border-radius: 12px;
-    padding: 10px 14px;
-    flex: 1;
-  }
+  .comment-body { background: var(--surface2); border-radius: 12px; padding: 10px 14px; flex: 1; }
+  .comment-author-name { font-weight: 600; font-size: 0.8rem; color: var(--accent2); margin-bottom: 3px; }
+  .comment-text { font-size: 0.88rem; color: var(--text); line-height: 1.5; }
 
-  .comment-author-name {
-    font-weight: 600;
-    font-size: 0.8rem;
-    color: var(--accent2);
-    margin-bottom: 3px;
-  }
-
-  .comment-text {
-    font-size: 0.88rem;
-    color: var(--text);
-    line-height: 1.5;
-  }
-
-  .comment-form {
-    display: flex;
-    gap: 10px;
-    margin-top: 14px;
-  }
+  .comment-form { display: flex; gap: 10px; margin-top: 14px; }
 
   .comment-input {
     flex: 1;
@@ -626,7 +548,6 @@
 
   .btn-comment:hover { background: #6d2ff0; }
 
-  /* SIDEBAR */
   .sidebar { display: flex; flex-direction: column; gap: 20px; }
 
   .sidebar-card {
@@ -661,43 +582,13 @@
   .trending-item:last-child { border-bottom: none; }
   .trending-item:hover .trending-text { color: var(--accent); }
 
-  .trending-rank {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1.4rem;
-    color: var(--accent2);
-    width: 28px;
-    text-align: center;
-  }
+  .trending-rank { font-family: 'Bebas Neue', cursive; font-size: 1.4rem; color: var(--accent2); width: 28px; text-align: center; }
+  .trending-text { font-size: 0.88rem; font-weight: 500; color: var(--text); transition: color 0.15s; }
+  .trending-count { margin-left: auto; font-size: 0.75rem; color: var(--text-muted); font-family: 'Space Mono', monospace; }
 
-  .trending-text {
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: var(--text);
-    transition: color 0.15s;
-  }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0; }
 
-  .trending-count {
-    margin-left: auto;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-family: 'Space Mono', monospace;
-  }
-
-  /* STATS */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 0;
-  }
-
-  .stat-box {
-    background: var(--surface2);
-    border-radius: 14px;
-    padding: 16px;
-    text-align: center;
-    border: 1px solid var(--border);
-  }
+  .stat-box { background: var(--surface2); border-radius: 14px; padding: 16px; text-align: center; border: 1px solid var(--border); }
 
   .stat-num {
     font-family: 'Bebas Neue', cursive;
@@ -709,25 +600,12 @@
     line-height: 1;
   }
 
-  .stat-label {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 4px;
-  }
+  .stat-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
 
-  /* EMPTY STATE */
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-muted);
-  }
-
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
   .empty-state .emoji { font-size: 3rem; margin-bottom: 16px; }
   .empty-state p { font-size: 0.95rem; }
 
-  /* LIGHTBOX */
   .lightbox {
     position: fixed;
     inset: 0;
@@ -742,12 +620,7 @@
 
   .lightbox.open { display: flex; }
 
-  .lightbox img {
-    max-width: 90vw;
-    max-height: 90vh;
-    border-radius: 12px;
-    object-fit: contain;
-  }
+  .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 12px; object-fit: contain; }
 
   .lightbox-close {
     position: absolute;
@@ -764,7 +637,6 @@
     justify-content: center;
   }
 
-  /* TOAST */
   .toast {
     position: fixed;
     bottom: 30px;
@@ -784,7 +656,6 @@
 
   .toast.show { transform: translateY(0); opacity: 1; }
 
-  /* LOADING */
   .loading-spinner {
     width: 36px; height: 36px;
     border: 3px solid var(--border);
@@ -796,7 +667,6 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* SCROLLBAR */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -808,7 +678,6 @@
 <canvas id="particles-canvas"></canvas>
 
 <div class="content-wrapper">
-  <!-- HEADER -->
   <header>
     <div class="header-inner">
       <div class="logo">
@@ -822,7 +691,6 @@
     </div>
   </header>
 
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-title">
       <span class="line1">EL CHISME</span>
@@ -831,7 +699,6 @@
     <p class="hero-sub">Publica lo que sabes · Anónimo o con nombre · Sin censura</p>
   </div>
 
-  <!-- CATEGORIES FILTER -->
   <div class="categories">
     <button class="cat-pill active" data-cat="all"><span class="emoji">🌐</span>Todo</button>
     <button class="cat-pill" data-cat="escandalo"><span class="emoji">💥</span>Escándalo</button>
@@ -841,10 +708,8 @@
     <button class="cat-pill" data-cat="general"><span class="emoji">👀</span>General</button>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
     <div class="feed-col">
-      <!-- FORM -->
       <div class="post-form-card">
         <div class="form-header">🔥 Suelta el Chisme</div>
         <div class="form-row">
@@ -873,13 +738,11 @@
         </div>
       </div>
 
-      <!-- POSTS -->
       <div id="posts-list" class="posts-list">
         <div class="loading-spinner"></div>
       </div>
     </div>
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-card">
         <div class="sidebar-title">📊 Stats del Día</div>
@@ -913,16 +776,19 @@
   </div>
 </div>
 
-<!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <img id="lightbox-img" src="" alt="">
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
+// ====================================================
+// URL DE TU SERVIDOR EN RENDER
+// ====================================================
+const API = 'https://chisme-yachay.onrender.com';
+
 // ===== PARTICLES =====
 const canvas = document.getElementById('particles-canvas');
 const ctx = canvas.getContext('2d');
@@ -991,7 +857,6 @@ function drawStar(ctx, cx, cy, spikes, outerR, innerR) {
 
 for (let i = 0; i < 120; i++) particles.push(new Particle());
 
-// Connect particles
 function connectParticles() {
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
@@ -1101,7 +966,7 @@ async function submitPost() {
   mediaFiles.forEach(f => formData.append('media', f));
 
   try {
-    const res = await fetch('/api/posts', { method: 'POST', body: formData });
+    const res = await fetch(`${API}/api/posts`, { method: 'POST', body: formData });
     if (!res.ok) throw new Error('Error al publicar');
     const post = await res.json();
     allPosts.unshift(post);
@@ -1125,7 +990,7 @@ async function submitPost() {
 // ===== LOAD POSTS =====
 async function loadPosts() {
   try {
-    const res = await fetch('/api/posts');
+    const res = await fetch(`${API}/api/posts`);
     allPosts = await res.json();
     renderPosts();
     updateStats();
@@ -1158,7 +1023,7 @@ function buildPostHTML(p, index) {
     <div class="post-media media-${Math.min(p.media.length, 4)}">
       ${p.media.slice(0, 4).map(m => m.type === 'video'
         ? `<div class="media-item"><video src="${m.url}" controls></video></div>`
-        : `<div class="media-item"><img src="${m.url}" onclick="openLightbox('${m.url}')" alt="media"></div>`
+        : `<div class="media-item"><img src="${m.url}" onclick="openLightbox('${m.url}')" alt="media" loading="lazy"></div>`
       ).join('')}
     </div>` : '';
 
@@ -1229,7 +1094,7 @@ async function likePost(id, btn) {
   btn.classList.toggle('liked');
   const span = btn.querySelector('span');
   try {
-    const res = await fetch(`/api/posts/${id}/like`, { method: 'POST' });
+    const res = await fetch(`${API}/api/posts/${id}/like`, { method: 'POST' });
     const data = await res.json();
     span.textContent = data.likes;
     const post = allPosts.find(p => p.id === id);
@@ -1241,7 +1106,7 @@ async function likePost(id, btn) {
 // ===== REACT =====
 async function react(id, emoji, btn) {
   try {
-    const res = await fetch(`/api/posts/${id}/react`, {
+    const res = await fetch(`${API}/api/posts/${id}/react`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ emoji })
@@ -1272,7 +1137,7 @@ async function addComment(postId) {
   if (!text) return;
 
   try {
-    const res = await fetch(`/api/posts/${postId}/comment`, {
+    const res = await fetch(`${API}/api/posts/${postId}/comment`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text, author: nameInput.value.trim() || 'Anónimo' })
@@ -1397,7 +1262,7 @@ function formatTime(iso) {
 // Auto-refresh cada 30 segundos
 setInterval(async () => {
   try {
-    const res = await fetch('/api/posts');
+    const res = await fetch(`${API}/api/posts`);
     const fresh = await res.json();
     if (fresh.length !== allPosts.length) {
       allPosts = fresh;
@@ -1411,3 +1276,4 @@ setInterval(async () => {
 </script>
 </body>
 </html>
+
