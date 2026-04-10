@@ -1,4 +1,5 @@
-Flask
+flask
+gunicorn
 flask_sqlalchemy
 cloudinary
-gunicorn
+psycopg2-binary
