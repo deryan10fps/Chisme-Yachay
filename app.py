@@ -9,8 +9,15 @@ import os
 app = Flask(__name__)
 
 # ================= DB =================
-app.config['SQLALCHEMY_DATABASE_URI'] = 'https://deryan10fps.github.io/Chisme-Yachay/'
+uri = os.getenv("DATABASE_URL")
+
+# Fix importante para Render PostgreSQL
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = uri or "sqlite:///db.sqlite3"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 # ================= CLOUDINARY =================
@@ -26,7 +33,7 @@ class Post(db.Model):
     author = db.Column(db.String(100))
     content = db.Column(db.Text)
     category = db.Column(db.String(50))
-    timestamp = db.Column(db.String(50))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     likes = db.Column(db.Integer, default=0)
 
 class Comment(db.Model):
@@ -55,11 +62,11 @@ def get_posts():
             "author": p.author,
             "content": p.content,
             "category": p.category,
-            "timestamp": p.timestamp,
+            "timestamp": p.timestamp.isoformat() if p.timestamp else None,
             "likes": p.likes,
             "comments": [{"author": c.author, "text": c.text} for c in comments],
-            "reactions": {"🔥":0,"😱":0,"😂":0},
-            "media": []  # luego puedes mejorar esto
+            "reactions": {"🔥": 0, "😱": 0, "😂": 0},
+            "media": []
         })
 
     return jsonify(result)
@@ -85,7 +92,7 @@ def create_post():
         author=author,
         content=content,
         category=category,
-        timestamp=datetime.now().isoformat(),
+        timestamp=datetime.utcnow(),
         likes=0
     )
 
@@ -97,11 +104,11 @@ def create_post():
         "author": new_post.author,
         "content": new_post.content,
         "category": new_post.category,
-        "timestamp": new_post.timestamp,
+        "timestamp": new_post.timestamp.isoformat(),
         "likes": new_post.likes,
         "comments": [],
-        "reactions": {"🔥":0,"😱":0,"😂":0},
-        "media": [{"url": url, "type":"image"} for url in media_urls]
+        "reactions": {"🔥": 0, "😱": 0, "😂": 0},
+        "media": [{"url": url, "type": "image"} for url in media_urls]
     })
 
 # 👍 LIKE
@@ -138,4 +145,6 @@ def add_comment(post_id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
